@@ -1,10 +1,15 @@
 <template>
   <div id="app">
-    <header-component />
+    <header-component 
+    :numCorrect ="numCorrect" 
+    :numTotal ="numTotal"  />
     <b-container>
       <b-row>
         <b-col sm="6" offset="3">
-          <question-component v-if="questionText.length" :currentQuestion= questionText[index]  :Next=nextClick />
+          <question-component v-if="questionText.length" :currentQuestion= questionText[index] 
+           :Next=nextClick 
+           :increment =increment
+           />
         </b-col>
       </b-row>
     </b-container>
@@ -24,12 +29,20 @@ export default {
   data(){ 
     return {
       questionText : [],
-      index : 0
+      index : 0,
+      numCorrect : 0 ,
+      numTotal : 0 
     }
   },
 methods : {
   nextClick(){
     this.index++
+  },
+  increment(isCorrect){
+    if(isCorrect){
+      this.numCorrect++
+    }
+    this.numTotal++
   }
 },
   mounted(){

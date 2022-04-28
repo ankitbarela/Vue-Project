@@ -12,13 +12,21 @@
           v-for="(answer,index) in answers"
           :key="answer"
           @click="selectAnswer(index)"
-          :class="[selectedIndex === index ? 'selected' : '']"
+          :class="[
+         !answered && selectedIndex === index ? 'selected' : 
+         answered && correctIndex === index ? 'correct' : 
+         answered && selectedIndex === index &&  correctIndex !== index ? 'incorrect' : ''
+          ]"
         >
           {{ answer }}</b-list-group-item
         >
       </b-list-group>
 
-      <b-button variant="primary" href="#">Submit</b-button>
+      <b-button 
+      variant="primary"
+      @click="submitAnswer" 
+      :disabled="selectedIndex === null || answered"
+      >Submit</b-button>
       <b-button variant="success" @click="Next" href="#">Next</b-button>
     </b-jumbotron>
   </div>
@@ -32,11 +40,14 @@ export default {
   props: {
     currentQuestion: Object,
     Next: Function,
+    increment : Function
   },
   data(){
       return {
           selectedIndex : null,
-          suffledAnswers : []
+          correctIndex : null,
+          suffledAnswers : [],
+          answered : false 
       }
   },
   watch:{
@@ -44,6 +55,7 @@ export default {
           immediate : true,
             handler(){
                  this.selectedIndex = null
+                 this.answered = false
                  this.suffleAnswer()
             }
       }
@@ -60,6 +72,16 @@ export default {
     suffleAnswer(){
       let answers = [...this.currentQuestion.incorrect_answers ,this.currentQuestion.correct_answer];
         this.suffledAnswers = _.shuffle(answers)
+        this.correctIndex = this.suffledAnswers.indexOf(this.currentQuestion.correct_answer)
+    },
+    submitAnswer(){
+        let isCorrect =false
+        if(this.selectedIndex === this.correctIndex){
+            isCorrect = true
+        }
+        this.answered = true
+
+        this.increment(isCorrect)
     }
   },
   computed: {
@@ -81,7 +103,7 @@ export default {
     background-color: lightblue;
 }
 .correct {
-    background-color: yellow;
+    background-color: green;
 }
 .incorrect {
     background-color: red;
