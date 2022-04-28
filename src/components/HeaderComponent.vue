@@ -1,6 +1,9 @@
 <template>
     <div>
-        <h1>header component</h1>
+    <b-nav tabs>
+        <b-nav-item disabled><b>Active</b></b-nav-item>
+        <b-nav-item disabled><b>Link</b></b-nav-item>
+    </b-nav>
     </div>
 </template>
 

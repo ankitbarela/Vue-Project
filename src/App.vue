@@ -1,22 +1,50 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <header-component/>
-    <question-component/>
+    <header-component />
+    <b-container>
+      <b-row>
+        <b-col sm="6" offset="3">
+          <question-component v-if="questionText.length" :currentQuestion= questionText[index]  :Next=nextClick />
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
 <script>
-import  HeaderComponent from './components/HeaderComponent.vue'
-import  QuestionComponent from './components/QuestionComponent.vue'
+import HeaderComponent from "./components/HeaderComponent.vue";
+import QuestionComponent from "./components/QuestionComponent.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     HeaderComponent,
-    QuestionComponent
+    QuestionComponent,
+  },
+  data(){ 
+    return {
+      questionText : [],
+      index : 0
+    }
+  },
+methods : {
+  nextClick(){
+    this.index++
   }
-}
+},
+  mounted(){
+    fetch('https://opentdb.com/api.php?amount=10&category=27&type=multiple',{
+      method: 'get'
+    })
+    .then((response) =>{
+      return response.json()
+    })
+    .then((jsonData)=>{
+      this.questionText = jsonData.results;
+      console.warn(this.questionText)
+    })
+  }
+};
 </script>
 
 <style>
