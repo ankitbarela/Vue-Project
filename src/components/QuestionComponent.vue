@@ -95,10 +95,16 @@ export default {
 </script>
 
 <style scoped>
+.question-box-container{
+    background-color: #EEE;
+    margin: 10px 0;
+}
 .list-group-item:hover{
     background-color: #EEE;
 }
-
+.btn{
+    margin: 10px 10px;
+}
 .selected {
     background-color: lightblue;
 }
